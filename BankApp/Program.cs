@@ -37,12 +37,38 @@ namespace BankApp
                             Console.WriteLine($"{i + 1}.{accountTypes[i]}");
                         }
                         Console.Write("Select an account type:");
-                        var accountType = Convert.ToInt32(Console.ReadLine());
+                        int accountType;
+                        if (!int.TryParse(Console.ReadLine(), out accountType))
+                        {
+                            Console.WriteLine("Invalid account type! Try again!");
+                                break;
+                        }
+                        if(accountType > accountTypes.Length)
+                        {
+                            Console.WriteLine("Invalid account type! Try again!");
+                            break;
+                        }
                         Console.Write("Deposit:");
                         var amount = Convert.ToDecimal(Console.ReadLine());
+                        try
+                        {
+                            var account = Bank.CreateAccount(emailAddress, (AccountType)(accountType - 1), amount);
+                            Console.WriteLine($"AN:{account.AccountNumber}, TA:{account.TypeOfAccount}, Balance: {account.Balance}, EA:{account.EmailAddress}");
+                        }
+                        catch (ArgumentNullException ax)
+                        {
+                            Console.WriteLine($"Oops!{ax.Message}");
+                        }
 
-                        var account = Bank.CreateAccount(emailAddress, (AccountType)(accountType - 1), amount);
-                        Console.WriteLine($"AN:{account.AccountNumber}, TA:{account.TypeOfAccount}, Balance: {account.Balance}, EA:{account.EmailAddress}");
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Something went wrong! Please try again");
+                        }
+                        finally
+                        {
+                            //clean up
+                        }
+                         
                         break;
                     case "2":
                         PrintAllAccounts();
