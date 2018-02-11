@@ -15,11 +15,12 @@ namespace BankApp
             Console.WriteLine("********************");
             while (true)
             {
-                Console.WriteLine("0.Exit");
-                Console.WriteLine("1.Create a new account");
-                Console.WriteLine("2.Deposite");
-                Console.WriteLine("3.Withdrawal");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("1. Create a new account");
+                Console.WriteLine("2. Deposit");
+                Console.WriteLine("3. Withdrawal");
                 Console.WriteLine("4. Print all accounts");
+                Console.WriteLine("5. Print all transactions");
 
                 Console.Write("Select an option:");
                 var option = Console.ReadLine();
@@ -88,6 +89,18 @@ namespace BankApp
                         break;
                     case "4":
                         PrintAllAccounts();
+                        break;
+
+                    case "5":
+                        PrintAllAccounts();
+                        Console.Write("Select an account number:");
+                        accountNumber = Convert.ToInt32(Console.ReadLine());
+                        var transactions = Bank.GetTransactionsByAccountNumber(accountNumber);
+                        foreach (var tran in transactions)
+                        {
+                            Console.WriteLine($"{tran.TransactionId}.{tran.Description}\t{tran.TransactionAmount}\t{tran.TransactionType}\t{tran.TransactionDate}");
+
+                        }
                         break;
                     default:
                         break;

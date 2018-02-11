@@ -52,15 +52,44 @@ namespace BankApp
             return account;
 
         }
+
+        public static IEnumerable<Transaction> GetTransactionsByAccountNumber(int accountNumber)
+        {
+            return db.Transactions.Where(t => t.AccountNumber == accountNumber).OrderByDescending(t => t.TransactionDate);
+        }
+
         public static void Deposit(int accountNumber, decimal amount)
         {
             var account = GetAccountByAccountNumber(accountNumber);
             account.Deposit(amount);
+
+            var transaction = new Transaction
+            {
+                TransactionDate = DateTime.Now,
+                TransactionAmount = amount,
+                Description = "Branch deposit",
+                TransactionType = TypesOfTransaction.Credit,
+                AccountNumber = account.AccountNumber
+            };
+            db.Transactions.Add(transaction);
+            db.SaveChanges();
         }
         public static void Withdraw(int accountNumber, decimal amount)
         {
             var account = GetAccountByAccountNumber(accountNumber);
             account.Withdraw(amount);
+
+            var transaction = new Transaction
+            {
+                TransactionDate = DateTime.Now,
+                TransactionAmount = amount,
+                Description = "Branch withdraw",
+                TransactionType = TypesOfTransaction.Debit,
+                AccountNumber = account.AccountNumber
+            };
+            db.Transactions.Add(transaction);
+            db.SaveChanges();
+
         }
     }
 }

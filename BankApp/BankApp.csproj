@@ -54,12 +54,39 @@
     <Compile Include="Account.cs" />
     <Compile Include="Bank.cs" />
     <Compile Include="BankModel.cs" />
+    <Compile Include="Migrations\201802041138547_InitialCreate.cs" />
+    <Compile Include="Migrations\201802041138547_InitialCreate.Designer.cs">
+      <DependentUpon>201802041138547_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802042355095_Transaction.cs" />
+    <Compile Include="Migrations\201802042355095_Transaction.Designer.cs">
+      <DependentUpon>201802042355095_Transaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802070100541_Transaction1.cs" />
+    <Compile Include="Migrations\201802070100541_Transaction1.Designer.cs">
+      <DependentUpon>201802070100541_Transaction1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802041138547_InitialCreate.resx">
+      <DependentUpon>201802041138547_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802042355095_Transaction.resx">
+      <DependentUpon>201802042355095_Transaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802070100541_Transaction1.resx">
+      <DependentUpon>201802070100541_Transaction1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
