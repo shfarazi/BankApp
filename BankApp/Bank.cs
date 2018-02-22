@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp
 {
-    static class Bank
+    public static class Bank
     {
         private static BankModel db = new BankModel();
      
@@ -18,7 +18,7 @@ namespace BankApp
         /// <param name="initialBalance"></param>
         /// <returns>Returns the account</returns>
         /// <exception cref="System.ArgumentNullException" />
-        public static Account CreateAccount(string emailAddress, AccountType typeOfAccount = AccountType.Checking, decimal initialBalance = 0.0M)
+        public static Account CreateAccount(string emailAddress, AccountType typeOfAccount = AccountType.Checking, decimal initialBalance = 0.0M, string accountName = "")
 
         {
             if(string.IsNullOrEmpty(emailAddress) ||string.IsNullOrWhiteSpace(emailAddress))
@@ -29,7 +29,8 @@ namespace BankApp
             var account = new Account
             {
                 EmailAddress = emailAddress,
-                TypeOfAccount = typeOfAccount
+                TypeOfAccount = typeOfAccount,
+                AccountName = accountName
             };
             if (initialBalance > 0)
                 account.Deposit(initialBalance);
@@ -37,10 +38,18 @@ namespace BankApp
             db.SaveChanges();
             return account;
         }
+        
+        public static Account CreateAccount(Account account)
+         {
+            if (account == null)
+                throw new ArgumentNullException("account", "Account cannot be empty.");
+           return CreateAccount(account.EmailAddress, account.TypeOfAccount, accountName: account.AccountName);
+            }
 
-        public static IEnumerable<Account> GetAccounts()
+
+        public static IEnumerable<Account> GetAccountsByEmailAddress(string emailAddress)
         {
-            return db.Accounts;
+            return db.Accounts.Where(a => a.EmailAddress == emailAddress);
         }
 
         public static Account GetAccountByAccountNumber(int accountNumber)
@@ -90,6 +99,17 @@ namespace BankApp
             db.Transactions.Add(transaction);
             db.SaveChanges();
 
+        }
+
+        public static void EditAccount (Account account)
+        {
+            var oldAccount = GetAccountByAccountNumber(account.AccountNumber);
+            oldAccount.EmailAddress = account.EmailAddress;
+            oldAccount.TypeOfAccount = account.TypeOfAccount;
+            oldAccount.AccountName = account.AccountName;
+
+            db.Entry(oldAccount).CurrentValues.SetValues(oldAccount);
+            db.SaveChanges();
         }
     }
 }

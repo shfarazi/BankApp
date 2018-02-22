@@ -20,7 +20,7 @@ namespace BankApp
     /// </summary>
     public class Account
     {
-        private static int lastAccountNumber = 0;
+        
 
         #region Properties
         /// <summary>
@@ -28,11 +28,11 @@ namespace BankApp
         /// </summary>
         [Key]
 
-        public int AccountNumber { get; private set; }
+        public int AccountNumber { get; set; }
         [StringLength(50, ErrorMessage ="Account name must be less than 50 characters")]
         public string AccountName { get; set; }
-        public DateTime CreatedDate { get; private set; }
-        public decimal Balance { get; private set; }
+        public DateTime CreatedDate { get; set; }
+        public decimal Balance { get; set; }
         [Required]
         public AccountType TypeOfAccount { get; set; }
         [Required]
@@ -42,7 +42,6 @@ namespace BankApp
         #region Constructors
         public Account()
         {
-            AccountNumber = ++lastAccountNumber;
             CreatedDate = DateTime.Now;
         }
 

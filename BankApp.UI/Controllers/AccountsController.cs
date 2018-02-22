@@ -19,7 +19,7 @@ namespace BankApp.UI.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Accounts.ToList());
+            return View(Bank.GetAccountsByEmailAddress(HttpContext.User.Identity.Name));
         }
 
         // GET: Accounts/Details/5
@@ -40,7 +40,11 @@ namespace BankApp.UI.Controllers
         // GET: Accounts/Create
         public ActionResult Create()
         {
-            return View();
+            var account = new Account
+            {
+                EmailAddress = HttpContext.User.Identity.Name
+            };
+            return View(account);
         }
 
         // POST: Accounts/Create
@@ -52,8 +56,7 @@ namespace BankApp.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Accounts.Add(account);
-                db.SaveChanges();
+                Bank.CreateAccount(account);
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +70,7 @@ namespace BankApp.UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.Accounts.Find(id);
+            Account account = Bank.GetAccountByAccountNumber(id.Value);
             if (account == null)
             {
                 return HttpNotFound();
@@ -84,8 +87,7 @@ namespace BankApp.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
+                Bank.EditAccount(account);
                 return RedirectToAction("Index");
             }
             return View(account);
